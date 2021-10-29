@@ -14,7 +14,10 @@
             alt=""
             srcset=""
           >
-          <div class="h-4 w-4 bg-green-500 border border-2 border-light-100 rounded rounded-full absolute right-1/4 bottom-0" />
+          <div
+            class="h-4 w-4 border border-2 border-light-100 rounded rounded-full absolute right-1/4 bottom-0"
+            :class="user.online ? 'bg-green-300' : 'bg-gray-400'"
+          />
         </div>
         <div class="flex flex-col">
           <h3 class="font-semibold text-gray-600 mb-1">
@@ -40,11 +43,10 @@
 </template>
 
 <script setup lang='ts'>
-import UserHook from '../../user/User.hook'
+import { getters, useUser } from '../../user/User.hook'
 import { onMounted } from '@vue/runtime-core'
 import Logout from '../../auth/components/Logout.vue'
 
-const { useUser, getters } = UserHook
 const { fetchUsers } = useUser()
 
 onMounted(async () => {

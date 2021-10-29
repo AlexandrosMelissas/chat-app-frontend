@@ -8,7 +8,21 @@
 </template>
 
 <script setup lang='ts'>
+import { onMounted, onUnmounted } from '@vue/runtime-core'
+import { useAuth } from '../../auth/Auth.hook'
+import { useWebSocket } from '../../reusable/hooks/useWebSocket'
 import ChatListVue from '../components/ChatList.vue'
+
+const { fetchUserWithToken } = useAuth()
+const { connect, disconnect } = useWebSocket()
+onMounted(async () => {
+  connect()
+  await fetchUserWithToken()
+})
+
+onUnmounted(() => {
+  disconnect()
+})
 </script>
 
 <style scoped>

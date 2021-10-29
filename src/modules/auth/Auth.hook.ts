@@ -55,6 +55,16 @@ export const useAuth = () => {
     }
   }
 
+  const fetchUserWithToken = async () => {
+    try {
+      const res = await axios.get('http://localhost:3000/auth/me') as AxiosResponse<User>
+
+      state.user = res.data
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   // Logout
   const logout = () => {
     state.token = null
@@ -64,6 +74,7 @@ export const useAuth = () => {
 
   return {
     login,
-    logout
+    logout,
+    fetchUserWithToken
   }
 }

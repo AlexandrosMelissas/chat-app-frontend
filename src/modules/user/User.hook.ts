@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { readonly, reactive, computed, ComputedRef } from 'vue'
+import { reactive, computed, ComputedRef } from 'vue'
 import { User } from './models/User'
 
 // Store types
@@ -19,12 +19,12 @@ const state: UserState = reactive({
   users: []
 })
 
-const getters: UserGetters = {
+export const getters: UserGetters = {
   getLoading: computed(() => state.loading),
   getUsers: computed(() => state.users)
 }
 
-const useUser = () => {
+export const useUser = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get('http://localhost:3000/users') as AxiosResponse<User[]>
@@ -35,15 +35,17 @@ const useUser = () => {
     }
   }
 
-  return {
-    fetchUsers
+  const setUserStatus = async (userId: string, online: boolean) => {
+    const foundUser = state.users.find(user => user.id === userId)
+    if (!foundUser) {
+      return
+    }
+
+    foundUser.online = online
   }
-}
 
-// Methods
-
-export default {
-  state: readonly(state),
-  getters,
-  useUser
+  return {
+    fetchUsers,
+    setUserStatus
+  }
 }
